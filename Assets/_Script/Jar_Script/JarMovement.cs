@@ -42,19 +42,19 @@ public class JarMovement : MonoBehaviour
     }
     private void Movement()
     {
-        if(isUp && !GameManager.instance.WaterEnd)
+        if (isUp && !GameManager.instance.WaterEnd)
         {
             this.jar.position = Vector3.MoveTowards(this.jar.position, this.endPosition, this.speed * Time.deltaTime);
         }
-        else if(isUp && GameManager.instance.WaterEnd)
+        else if (isUp && GameManager.instance.WaterEnd)
         {
             bool isDone = false;
             // do nuoc
-            if(this.jar.eulerAngles.z < this.rotationMax)
+            if (this.jar.eulerAngles.z < this.rotationMax)
             {
-                this.jar.Rotate(new Vector3(0, 0, GetVelocity()*Time.deltaTime));
+                this.jar.Rotate(new Vector3(0, 0, GetVelocity() * Time.deltaTime));
             }
-            else if(this.jar.eulerAngles.z > this.rotationMax)
+            else if (this.jar.eulerAngles.z > this.rotationMax)
             {
                 this.jar.transform.localRotation = Quaternion.Euler(0, 0, this.rotationMax);
             }
@@ -63,7 +63,7 @@ public class JarMovement : MonoBehaviour
                 isDone = true;
             }
             this.jar.position = Vector3.MoveTowards(this.jar.position, this.targetPosition, this.speed * Time.deltaTime);
-            if (this.jar.GetComponent<JarController>().flowWater && this.numberFlow <1 && this.jar.position == this.targetPosition && isDone)
+            if (this.jar.GetComponent<JarController>().flowWater && this.numberFlow < 1 && this.jar.position == this.targetPosition && isDone)
             {
                 this.numberFlow++;
                 GameObject flow = Instantiate(this.jar.GetComponent<JarController>().flowWater);
@@ -81,11 +81,25 @@ public class JarMovement : MonoBehaviour
             if (this.jar.eulerAngles.z > 0 && this.jar.eulerAngles.z <= this.rotationMax)
             {
                 this.jar.Rotate(new Vector3(0, 0, -GetVelocity() * Time.deltaTime));
+                if (this.jar.eulerAngles.z > 0 && this.jar.eulerAngles.z < 20)
+                {
+                    transform.parent.transform.Find("Model").GetComponent<SpriteRenderer>().sortingOrder = 4;
+                    List<Transform> waterColors = transform.parent.GetComponent<JarController>().watersColors;
+                    for (int i = 0; i < 4; i++)
+                    {
+                        GameObject color = waterColors[i].transform.Find("Color").gameObject;
+                        if (color)
+                        {
+                            color.GetComponent<SpriteRenderer>().sortingOrder = 6;
+                        }
+                    }
+                }
             }
             else
             {
                 this.numberFlow = 0;
                 this.jar.transform.localRotation = Quaternion.Euler(0, 0, 0);
+
             }
             this.jar.position = Vector3.MoveTowards(this.jar.position, this.beginPosition, this.speed * Time.deltaTime);
         }

@@ -36,9 +36,9 @@ public class JarController : Core
     }
     private void LoadWaterColor()
     {
-        for(int i = 1; i <= 4; i++)
+        for (int i = 1; i <= 4; i++)
         {
-            string name = "Water"+i.ToString();
+            string name = "Water" + i.ToString();
             this.watersColors.Add(transform.Find(name));
         }
         this.PosFlow = transform.Find("PosFlow");
@@ -66,12 +66,22 @@ public class JarController : Core
     /// </summary>
     private void OnMouseDown()
     {
-        if(!GameManager.instance.WaterBegin && !GameManager.instance.WaterEnd)
+        if (!GameManager.instance.WaterBegin && !GameManager.instance.WaterEnd)
         {
             if (CheckNumberActiveColor() <= 0) return;//<0 thi k co mau de chuyen
             this.jarMovement.IsUp = true;
+            transform.Find("Model").GetComponent<SpriteRenderer>().sortingOrder = 10;
+            for (int i = 0; i < 4; i++)
+            {
+                GameObject color = watersColors[i].transform.Find("Color").gameObject;
+                if (color)
+                {
+                    color.GetComponent<SpriteRenderer>().sortingOrder = 11;
+                }
+            }
             GameManager.instance.WaterBegin = gameObject;
-        }else if(GameManager.instance.WaterBegin != gameObject && !GameManager.instance.WaterEnd)
+        }
+        else if (GameManager.instance.WaterBegin != gameObject && !GameManager.instance.WaterEnd)
         {
             if (CheckNumberActiveColor() == 4)//>4 da day k the nhan
             {
@@ -100,7 +110,7 @@ public class JarController : Core
             }
             else
             {
-                number++;  
+                number++;
             }
         }
         return number;
@@ -118,7 +128,7 @@ public class JarController : Core
                 this.locationColor = i;
                 break;
             }
-            
+
         }
     }
 }

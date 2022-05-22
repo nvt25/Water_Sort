@@ -6,17 +6,17 @@ public class ColorWater : MonoBehaviour
 {
     public void CheckDone()
     {
+        GameManager.instance.DestroyWaterBegin();
         Debug.Log("Water");
         if(GameManager.instance.zeroActive > 0 && GameManager.instance.numberSameColor >0)
         {
             JarController jar = transform.parent.parent.GetComponent<JarController>();
             List<Transform> waterColor = jar.watersColors;
             int lengthWaterColor = waterColor.Count;
-            for(int i = 0; i < lengthWaterColor - 1; i++)
+            for (int i = 0; i < lengthWaterColor; i++)
             {
-                Debug.Log(GameManager.instance.zeroActive);
-                Debug.Log(GameManager.instance.numberSameColor);
                 GameObject color = waterColor[i].transform.Find("Color").gameObject;
+                Debug.Log(color.activeSelf);
                 if (!color.activeSelf)
                 {
                     color.SetActive(true);

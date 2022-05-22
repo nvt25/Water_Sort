@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
     public AudioClip audioWin;
     private void Awake()
     {
-        if(GameManager.instance != null)
+        if (GameManager.instance != null)
         {
             Debug.Log("Value Error");
         }
@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public GameObject WaterBegin
     {
-        set 
+        set
         {
             this.waterBegin = value;
             if (this.waterBegin == null) return;
@@ -54,7 +54,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public GameObject WaterEnd
     {
-        set 
+        set
         {
             this.waterEnd = value;
             if (this.waterEnd == null) return;
@@ -93,11 +93,11 @@ public class GameManager : MonoBehaviour
                 numberSameColor++;
                 this.colorBegin = colorOfWater.GetComponent<SpriteRenderer>().color;
                 if (i == 0) break;
-                if(this.colorBegin.ToString() != waterJarBegin[i-1].transform.Find("Color").GetComponent<SpriteRenderer>().color.ToString())
+                if (this.colorBegin.ToString() != waterJarBegin[i - 1].transform.Find("Color").GetComponent<SpriteRenderer>().color.ToString())
                 {
                     break;
                 }
-                
+
             }
         }
         //Debug.Log(numberSameColor);
@@ -124,16 +124,16 @@ public class GameManager : MonoBehaviour
                 // so con trong
                 this.zeroActive++;
             }
-            
+
         }
     }
-    
+
     /// <summary>
     /// So sanh mau 2 doi tuong 
     /// </summary>
     public void CheckValid()
     {
-        if(this.colorEnd.ToString() == this.colorBegin.ToString() || this.zeroActive == 4)
+        if (this.colorEnd.ToString() == this.colorBegin.ToString() || this.zeroActive == 4)
         {
             // dung thi bo qua
             return;
@@ -148,9 +148,25 @@ public class GameManager : MonoBehaviour
     }
     public void onAudio()
     {
-        if(this.audioSource && this.audioWin)
+        if (this.audioSource && this.audioWin)
         {
             this.audioSource.PlayOneShot(audioWin);
+        }
+    }
+    public void DestroyWaterBegin()
+    {
+        if (!this.waterBegin || !this.waterEnd) return;
+        List<Transform> waterJarBegin = this.waterBegin.GetComponent<JarController>().watersColors;
+        int lengthJarBegin = waterJarBegin.Count;
+        for (int i = lengthJarBegin - 1; i >= 0; i--)
+        {
+            GameObject colorOfWater = waterJarBegin[i].transform.Find("Color").gameObject;
+            bool isColorActive = colorOfWater.activeSelf;
+            if (isColorActive)
+            {
+                colorOfWater.SetActive(false);
+                break;
+            }
         }
     }
 }
